@@ -1,0 +1,12 @@
+name: muse-summoner
+services:
+- name: web
+  github:
+    repo: yourusername/muse-summoner
+    branch: main
+  build_command: pip install -r requirements.txt
+  run_command: gunicorn app:app
+  http_port: 5000
+  env:
+    - key: FLASK_ENV
+      value: production

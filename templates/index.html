@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muse Summoner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="text-center my-4">
+            <h1>Muse Summoner</h1>
+            <p class="lead">Interact with AI personas that assist you emotionally, creatively, and strategically</p>
+        </header>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Available Muses</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="muse-list">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Commands</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">List muses</li>
+                            <li class="list-group-item">Create a new muse</li>
+                            <li class="list-group-item">Exit muse</li>
+                            <li class="list-group-item">View history</li>
+                            <li class="list-group-item">Clear memory</li>
+                            <li class="list-group-item">Help</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 id="active-muse">Muse Summoner System</h5>
+                        <span id="status-badge" class="badge bg-secondary">Idle</span>
+                    </div>
+                    <div class="card-body">
+                        <div id="conversation" class="mb-3">
+                            <div class="message system">
+                                <div class="message-content">
+                                    <p>Welcome to the Memory-Enhanced Muse Summoner system. I can help you interact with different AI personas called "muses" who can assist you emotionally, creatively, or strategically.</p>
+                                    <p>Currently, Salvatore Inverso is available. You can summon him by saying "Come into fashion".</p>
+                                    <p>You can also:</p>
+                                    <ul>
+                                        <li>Create a new muse by saying "Create a new muse"</li>
+                                        <li>List all available muses by saying "List muses"</li>
+                                        <li>View conversation history by saying "View history"</li>
+                                        <li>Clear a muse's memory by saying "Clear memory"</li>
+                                        <li>Get help by saying "Help"</li>
+                                    </ul>
+                                    <p>What would you like to do?</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="user-input" class="form-control" placeholder="Type your message here...">
+                            <button id="send-button" class="btn btn-primary">Send</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4" id="creation-panel" style="display: none;">
+                    <div class="card-header">
+                        <h5>Create New Muse</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="creation-prompt" class="mb-3"></div>
+                        <div class="input-group">
+                            <input type="text" id="creation-input" class="form-control" placeholder="Type your response here...">
+                            <button id="creation-submit" class="btn btn-success">Submit</button>
+                            <button id="creation-cancel" class="btn btn-danger">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muse Summoner Admin - Configuration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.admin_home') }}">
+                                <span data-feather="home"></span>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ url_for('admin.admin_config') }}">
+                                <span data-feather="settings"></span>
+                                Configuration
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.admin_muses') }}">
+                                <span data-feather="users"></span>
+                                Muse Management
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.admin_system') }}">
+                                <span data-feather="server"></span>
+                                System Status
+                            </a>
+                        </li>
+                        <li class="nav-item mt-4">
+                            <a class="nav-link" href="/">
+                                <span data-feather="message-square"></span>
+                                Return to Chat
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">System Configuration</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button id="save-config" class="btn btn-primary">Save Changes</button>
+                            <button id="reset-config" class="btn btn-outline-secondary">Reset to Defaults</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-success" id="config-success" style="display: none;">
+                    Configuration saved successfully!
+                </div>
+                <div class="alert alert-danger" id="config-error" style="display: none;">
+                    Error saving configuration.
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>General Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3 row">
+                                    <label for="system_name" class="col-sm-3 col-form-label">System Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control config-input" id="system_name" value="{{ config.system_name }}">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="debug_mode" class="col-sm-3 col-form-label">Debug Mode</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input config-input" type="checkbox" id="debug_mode" {% if config.debug_mode %}checked{% endif %}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="default_muse" class="col-sm-3 col-form-label">Default Muse</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control config-input" id="default_muse" value="{{ config.default_muse }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>Memory Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3 row">
+                                    <label for="memory_enabled" class="col-sm-6 col-form-label">Memory Enabled</label>
+                                    <div class="col-sm-6">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input config-input" type="checkbox" id="memory_enabled" {% if config.memory_enabled %}checked{% endif %}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="max_memory_entries" class="col-sm-6 col-form-label">Max Memory Entries</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" class="form-control config-input" id="max_memory_entries" value="{{ config.max_memory_entries }}">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="memory_relevance_threshold" class="col-sm-6 col-form-label">Relevance Threshold</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" step="0.01" class="form-control config-input" id="memory_relevance_threshold" value="{{ config.memory_relevance_threshold }}">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="memory_storage_dir" class="col-sm-6 col-form-label">Storage Directory</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control config-input" id="memory_storage_dir" value="{{ config.memory_storage_dir }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>Web Application Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3 row">
+                                    <label for="web_host" class="col-sm-6 col-form-label">Host</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control config-input" id="web_host" value="{{ config.web_host }}">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="web_port" class="col-sm-6 col-form-label">Port</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" class="form-control config-input" id="web_port" value="{{ config.web_port }}">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="session_timeout" class="col-sm-6 col-form-label">Session Timeout (seconds)</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" class="form-control config-input" id="session_timeout" value="{{ config.session_timeout }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>Customization Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3 row">
+                                    <label for="allow_muse_creation" class="col-sm-4 col-form-label">Allow Muse Creation</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input config-input" type="checkbox" id="allow_muse_creation" {% if config.allow_muse_creation %}checked{% endif %}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="allow_memory_clearing" class="col-sm-4 col-form-label">Allow Memory Clearing</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input config-input" type="checkbox" id="allow_memory_clearing" {% if config.allow_memory_clearing %}checked{% endif %}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="allow_system_commands" class="col-sm-4 col-form-label">Allow System Commands</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input config-input" type="checkbox" id="allow_system_commands" {% if config.allow_system_commands %}checked{% endif %}>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>Response Generation Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3 row">
+                                    <label for="include_memory_references" class="col-sm-4 col-form-label">Include Memory References</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input config-input" type="checkbox" id="include_memory_references" {% if config.response_generation.include_memory_references %}checked{% endif %}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="signature_question_probability" class="col-sm-4 col-form-label">Signature Question Probability</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" step="0.1" min="0" max="1" class="form-control config-input" id="signature_question_probability" value="{{ config.response_generation.signature_question_probability }}">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="max_response_length" class="col-sm-4 col-form-label">Max Response Length</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control config-input" id="max_response_length" value="{{ config.response_generation.max_response_length }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script src="{{ url_for('static', filename='admin.js') }}"></script>
+</body>
+</html>
