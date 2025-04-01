@@ -11,7 +11,7 @@ import datetime
 from collections import deque
 
 class MuseMemory:
-    def __init__(self, storage_dir="/home/ubuntu/muse_summoner/memory"):
+    def __init__(self, storage_dir="/tmp/memory_storage"):
         """Initialize the muse memory system with a storage directory."""
         self.storage_dir = storage_dir
         self.memory_cache = {}
