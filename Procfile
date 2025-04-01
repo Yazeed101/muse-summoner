@@ -1,1 +1,1 @@
-web: gunicorn muse_summoner_package.app:app
+web: gunicorn app:app
